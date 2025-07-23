@@ -24,7 +24,7 @@ export const handleLogin = async (req: Request, res: Response) => {
     if (user) {
       res.render('success', { message: `Welcome ${user.name}` });
     } else {
-      res.render('login', { error: 'Invalid email or password' }); // Pass error
+      res.render('login', { error: 'Invalid email or password' });
     }
   } catch (err) {
     res.status(400).send(err);
@@ -37,12 +37,12 @@ export const handleForgot = async (req: Request, res: Response) => {
     const tokenData = await AuthService.generateResetToken(email);
     if (!tokenData) return res.send('User not found');
 
-    const resetLink = `http://localhost:3000/reset-password?${tokenData.token}`;
+    const resetLink = `http://localhost:3000/reset-password/${tokenData.token}`;
     await transporter.sendMail({
       from: process.env.SMTP_USER,
       to: email,
       subject: 'Reset Password',
-      html: `<p>Click <a href="${resetLink}">here</a> to reset password</p>`,
+      html: `<p>Click <a href="${resetLink}">here</a> to reset your password. Link valid for 15 minutes.</p>`,
     });
 
     res.render('success', { message: 'Password reset link sent!' });
@@ -52,7 +52,8 @@ export const handleForgot = async (req: Request, res: Response) => {
 };
 
 export const showReset = (req: Request, res: Response) => {
-  res.render('reset', { token: req.params.token });
+  const { token } = req.params;
+  res.render('reset-password', { token });
 };
 
 export const handleReset = async (req: Request, res: Response) => {
