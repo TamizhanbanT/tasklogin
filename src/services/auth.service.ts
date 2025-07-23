@@ -7,7 +7,7 @@ const JWT_SECRET = process.env.JWT_SECRET as string;
 export const registerUser = async (data: { name: string; email: string; password: string }) => {
   const hashedPassword = await bcrypt.hash(data.password, 10);
   return prisma.user.create({
-    data: { name: data.name, email: data.email, password: hashedPassword },
+    data: { name: data.name, email: data.email, password: data.password },
   });
 };
 

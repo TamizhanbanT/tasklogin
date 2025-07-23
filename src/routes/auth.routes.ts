@@ -4,7 +4,7 @@ import * as AuthController from '../controllers/auth.controller';
 const router = Router();
 
 router.get('/signup', AuthController.showSignup);
-router.get('/login', AuthController.showLogin);
+router.get('/', AuthController.showLogin);
 router.get('/forgot', AuthController.showForgot);
 
 router.post('/signup', AuthController.handleSignup);
